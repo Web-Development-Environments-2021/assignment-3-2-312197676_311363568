@@ -11,11 +11,11 @@ async function validUsername(username){
   return true
 }
 
-async function addNewUser(username,firstname,lastname,password,email,link){
+async function addNewUser(username,firstname,lastname,password,email,link,country){
   const user_id = await DButils.execQuery(
-    `INSERT INTO dbo.users (username, firstname, lastname, password, email, link)
-     VALUES ('${username}', '${firstname}',
-      '${lastname}', '${password}', '${email}', '${link}');
+    `INSERT INTO dbo.users (username, firstname, lastname, password, email, link, country)
+     VALUES ('${username}', '${firstname}','${lastname}',
+      '${password}', '${email}', '${link}','${country}');
       SELECT SCOPE_IDENTITY() as id`
   );
   await DButils.execQuery(
