@@ -5,6 +5,12 @@ const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils");
 const coaches_utils = require("./utils/coaches_utils");
 
+var isCookiesOn=false;
+router.use(async function (req,res,next){
+  req.session ? isCookiesOn=true : isCookiesOn=false;
+  next();
+})
+
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
 
   try {
@@ -31,7 +37,7 @@ router.get("/teamFullDetails/search/:teamName", async (req, res, next) => {
     const team_details = await teams_utils.getTeamInfoByName(
       req.params.teamName
     )
-    //we should keep implementing team page.....
+    isCookiesOn? req.session.lastQueryResults= team_details : null;
     res.send(team_details);
   } catch (error) {
     next(error);
