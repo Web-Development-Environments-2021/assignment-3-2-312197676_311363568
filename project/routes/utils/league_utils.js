@@ -100,25 +100,7 @@ async function getLeagueById(id){
   }
 }
 
-async function getSeasonByLeagueID(leagueID,seasonID){
-  const league_info=await axios.get(`${api_domain}/leagues/${leagueID}`,
-  {
-    params: {
-      api_token: process.env.api_token,
-      include: "seasons"
-    }
-  });
-  seasons=league_info.data.data.seasons.data;
-  res=seasons.filter(season=> season.id==seasonID)[0];
-  return {
-    season_id: res.id,
-    season_year: res.name,
-    cur_stage:res.current_stage_id,
-    stages: await getStagesBySeason(res.id)
-  }
-}
-
-async function getStagesBySeason(seasonID){
+async function getSeasonBySeassonID(seasonID){
   const seasonInfo=await axios.get(`${api_domain}/seasons/${seasonID}`,
   {
     params:{
@@ -126,19 +108,27 @@ async function getStagesBySeason(seasonID){
       include: "stages"
     }
   });
-  return seasonInfo.data.data.stages.data.map(function callbackFn(stage){
-    return {
-      id:stage.id,
-      name:stage.name,
-      type:stage.type,
-    }
-  });
+  season=seasonInfo.data.data;
+  return {
+    season_id: season.id,
+    season_year: season.name,
+    cur_stage: season.current_stage_id,
+    stages: getRelevantInformationFromStages(season.stages.data)
+  }
 }
- 
 
+function getRelevantInformationFromStages(stages){
+  return stages.map((stage) => {
+    return {
+      id: stage.id,
+      name: stage.name,
+      type: stage.type
+    }
+  })
+}
 
 exports.getLeagueDetails = getLeagueDetails;
 exports.getLeagueCurrentSeassonId = getLeagueCurrentSeassonId;
 exports.getAllLeagues = getAllLeagues;
 exports.getLeagueById=getLeagueById;
-exports.getSeasonByLeagueID=getSeasonByLeagueID;
+exports.getSeasonBySeassonID=getSeasonBySeassonID;
