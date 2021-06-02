@@ -1,6 +1,7 @@
 const { assert } = require("console");
 const { resourceUsage } = require("process");
 const DButils = require("./DButils");
+const auth_utils = require("./auth_utils");
 
 
 async function updateEvent(event_id, description){

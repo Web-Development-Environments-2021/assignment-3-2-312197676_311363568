@@ -97,15 +97,16 @@ router.delete("/deleteMatch/:matchId", async (req, res, next) => {
     next(error);
   }
 });
-// roleId 2 meaning referee role
-// status 0 meaning pending for user approval
+
+
 /**
  * request for append user as role to Role table 
  * checking if the user existing in user table and if it not exist in Roles table already
  */
 router.post("/AppointmentReferee", async (req,res,next) => {
   try{
-    user_id = req.body.user_id
+    username=req.body.username;
+    user_id = await auth_utils.getUserIdByUsername(username);
     user_exist = await users_utils.userExist(user_id)
     if (!user_exist){
       throw {staus:404, message: 'userId doesnt exist in system'};
@@ -128,7 +129,8 @@ router.post("/AppointmentReferee", async (req,res,next) => {
 
 router.post("/AppointmentRefereeToSeason", async (req,res,next)=>{
   try{
-    const user_id=req.body.user_id;
+    const username=req.body.username;
+    const user_id = await auth_utils.getUserIdByUsername(username);
     const is_referee = await association_users_utils.isReferee(user_id);
     if (!is_referee){
       throw {status: 404, message:'userId is not define as referee'};
@@ -143,10 +145,11 @@ router.post("/AppointmentRefereeToSeason", async (req,res,next)=>{
 
 router.post("/appointmentRefereeToMatch", async(req,res,next)=>{
   try{
-    user_id=req.body.user_id;
-    league_id=req.body.league_id;
-    season_id=req.body.season_id;
-    match_id=req.body.match_id;
+    const username=req.body.username;
+    const user_id =await auth_utils.getUserIdByUsername(username);
+    const league_id=req.body.league_id;
+    const season_id=req.body.season_id;
+    const match_id=req.body.match_id;
     const isRefereeInSeason=await association_users_utils.isRefereeInSeason(user_id,league_id,season_id);
     if (!isRefereeInSeason){
       throw {status: 404, message:'user id isnt appointment to referee in chosen season'};

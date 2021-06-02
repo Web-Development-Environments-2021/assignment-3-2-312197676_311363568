@@ -76,7 +76,7 @@ async function userExist(user_id){
 // refereeRequests
 async function awaitingRefereeRequest(user_id){
   const user_referee_requests = await DButils.execQuery(
-    `SELECT * FROM dbo.RequestRole WHERE (userId=${req.user_id} AND
+    `SELECT * FROM dbo.RequestRole WHERE (userId=${user_id} AND
        roleId=${process.env.refereeRole})`
     );
   if (user_referee_requests.length == 0){
