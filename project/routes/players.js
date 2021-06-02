@@ -21,6 +21,7 @@ router.get("/search/:playerName", async (req, res, next) => {
     const players_info = await players_utils.getPlayerInfoByName(
       req.params.playerName
     )
+    isCookiesOn? req.session.lastQuery= req.params.playerName : null;
     isCookiesOn? req.session.lastQueryResults=players_info: null;
     res.send(players_info);
   } catch (error) {
