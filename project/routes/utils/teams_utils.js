@@ -20,6 +20,7 @@ async function getTeamInfoById(team_id){
   const team_info = await axios.get(`${api_domain}/teams/${team_id}`, {
     params: {
       api_token: process.env.api_token,
+      include: "venue"
     },
   })
   return extractRelevantTeamData(team_info.data.data)
@@ -29,6 +30,7 @@ async function getTeamInfoByName(team_name){
   const team_info = await axios.get(`${api_domain}/teams/search/${team_name}`, {
     params: {
       api_token: process.env.api_token,
+      include: "venue"
     },
   })
   return extractRelevantTeamsData(team_info)
@@ -46,13 +48,14 @@ return extractRelevantTeamsData(all_teams);
 
 
 function extractRelevantTeamData(team_info) {
-    //const { fullname, image_path, position_id } = player_info.data.data;
+    const stadium  = team_info.venue.data.name;
     const {name, id, logo_path, short_code}=team_info;
     return {
       id: id,
       name: name,
       logo: logo_path,
       short_code: short_code,
+      stadium: stadium
     };
 }
 

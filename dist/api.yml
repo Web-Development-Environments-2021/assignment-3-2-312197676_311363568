@@ -1145,6 +1145,10 @@ components:
           type: string
           description: short name of the team.
           example: FCM
+        stadium:
+          type: string
+          description: team home stadium.
+          example: MCH Arena
     profilewatchFavoriteMatch_inner:
       properties:
         match_id:

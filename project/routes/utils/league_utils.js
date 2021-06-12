@@ -26,19 +26,38 @@ async function getLeagueDetails() {
       },
     }
   );
-  const stage = await axios.get(
-    `${api_domain}/stages/${league.data.data.current_stage_id}`,
-    {
-      params: {
-        api_token: process.env.api_token,
-      },
-    }
-  );
+  let stage;
+  if (league.data.data.current_stage_id){
+    const stage_request = await axios.get(
+      `${api_domain}/stages/${league.data.data.current_stage_id}`,
+      {
+        params: {
+          api_token: process.env.api_token,
+        },
+      }
+    );
+     stage = stage_request.data.data
+  }
+  else{
+    const seasons = await axios.get(
+      `${api_domain}/seasons/${league.data.data.season.data.id}`,
+      {
+        params: {
+          include: "stages",
+          api_token: process.env.api_token,
+        },
+      }
+    );
+     stage = seasons.data.data.stages.data.slice(-1)[0]
+  }
   const next_game= await getClosetMatch();
   return {
     league_name: league.data.data.name,
+    league_id: league.data.data.id,
     current_season_name: league.data.data.season.data.name,
-    current_stage_name: stage.data.data.name,
+    current_seasson_id: league.data.data.season.data.id,
+    current_stage_name: stage.name,
+    current_stage_id: stage.id,
     next_game_details: next_game.length==1 ? next_game[0] : null
     // next game details should come from DB
   };
