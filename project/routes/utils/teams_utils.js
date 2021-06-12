@@ -8,6 +8,7 @@ async function getTeamsInfoById(teams_ids_list){
         axios.get(`${api_domain}/teams/${id}`, {
           params: {
             api_token: process.env.api_token,
+            include: "venue"
           },
         })
       )
