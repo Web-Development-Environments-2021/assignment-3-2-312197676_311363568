@@ -40,6 +40,7 @@ async function getAllTeamsInfoBySeassonId(seasson_id){
   const all_teams = await axios.get(`${api_domain}/teams/season/${seasson_id}`, {
     params: {
       api_token: process.env.api_token,
+      include: "venue"
     },
   })
 return extractRelevantTeamsData(all_teams);
