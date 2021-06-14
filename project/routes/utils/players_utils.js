@@ -71,20 +71,23 @@ function extractRelevantPlayersData(players_info) {
 function extractRelevantPlayerData(player_info){
   const {player_id, fullname, image_path, position_id,
     common_name, nationality, birthdate, birthcountry, height, weight} = player_info;
- const { name } = player_info.team.data;
- return {
-   id: player_id,
-   name: fullname,
-   common_name: common_name,
-   position: position_id,
-   team_name: name,
-   nationality: nationality,
-   birthdate: birthdate,
-   birthcountry: birthcountry,
-   height: height,
-   weight: weight,
-   image: image_path,
- };
+  let team_name = null
+  if(player_info.team && player_info.team.data){
+    team_name = player_info.team.data.name;
+    }
+  return {
+    id: player_id,
+    name: fullname,
+    common_name: common_name,
+    position: position_id,
+    team_name: team_name,
+    nationality: nationality,
+    birthdate: birthdate,
+    birthcountry: birthcountry,
+    height: height,
+    weight: weight,
+    image: image_path,
+  };
 }
 
 exports.getPlayerInfoByName = getPlayerInfoByName;

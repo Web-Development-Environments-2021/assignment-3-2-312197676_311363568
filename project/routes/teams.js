@@ -33,9 +33,7 @@ router.get("/teamFullDetails/search/:teamName", async (req, res, next) => {
     const team_details = await teams_utils.getTeamInfoByName(
       req.params.teamName
     )
-    isCookiesOn? req.session.lastQuery= req.params.teamName : null;
-    isCookiesOn? req.session.lastQueryResults= team_details : null;
-    res.send(team_details);
+    res.send(team_details.slice(0,50));
   } catch (error) {
     next(error);
   }
