@@ -50,7 +50,13 @@ return extractRelevantTeamsData(all_teams);
 
 
 function extractRelevantTeamData(team_info) {
+    let stadium;
+    try{
     const stadium  = team_info.venue.data.name;
+    }
+    catch(err){
+      stadium = null
+    }
     const {name, id, logo_path, short_code}=team_info;
     return {
       id: id,

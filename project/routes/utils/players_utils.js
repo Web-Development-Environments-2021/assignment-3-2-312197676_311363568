@@ -22,6 +22,9 @@ async function getPlayerInfoByName(player_name){
       include: "team",
     },
   })
+  if (players_info.data.data.length == 0){
+    return players_info.data.data
+  }
   return extractRelevantPlayersData(players_info)
 }
 
